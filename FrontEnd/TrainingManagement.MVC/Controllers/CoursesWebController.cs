@@ -15,7 +15,7 @@ namespace TrainingManagement.MVC.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            string url = "https://localhost:7120/api/courses";
+            string url = "https://localhost:7120/api/Course";
             ResponseDTO responseDto = new ResponseDTO();
             var response = _serviceProvider.SendRequestAsync(new Models.RequestDTO()
             {

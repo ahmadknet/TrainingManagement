@@ -6,17 +6,17 @@ namespace TrainingManagement.CourseApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CourseApiController : ControllerBase
+    public class CourseController : ControllerBase
     {
         //add constructor and inject the dbcontext
         private readonly Models.CourseDbContext _context;
         //create constructor method               
-        public CourseApiController(Models.CourseDbContext context)
+        public CourseController(Models.CourseDbContext context)
         {
             _context = context;
         }
         [HttpGet]
-        public ResponseDTO GetCourses()
+        public ResponseDTO Get()
         {
             ResponseDTO responseDTO = new ResponseDTO();
             try
