@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "TrainingManagement.MVC": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:64680;http://localhost:64681"
+    }
+  }
+}

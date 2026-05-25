@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/FrontEnd/" />
+  <Folder Name="/FrontEnd/">
+    <Project Path="FrontEnd/TrainingManagement.MVC/TrainingManagement.MVC.csproj" />
+  </Folder>
   <Folder Name="/Geteway/" />
   <Folder Name="/Integration/" />
   <Folder Name="/Services/">
