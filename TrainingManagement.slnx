@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/FrontEnd/" />
+  <Folder Name="/Geteway/" />
+  <Folder Name="/Integration/" />
+  <Folder Name="/Services/">
+    <Project Path="TrainingManagement.CourseApi/TrainingManagement.CourseApi.csproj" />
+  </Folder>
+</Solution>
