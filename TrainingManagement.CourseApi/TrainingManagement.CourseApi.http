@@ -3,4 +3,7 @@
 GET {{TrainingManagement.CourseApi_HostAddress}}/weatherforecast/
 Accept: application/json
 
+# GET {{TrainingManagement.CourseApi_HostAddress}}/CourseApi/
+# Accept: application/json 
+
 ###

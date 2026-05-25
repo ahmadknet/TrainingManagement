@@ -7,7 +7,7 @@ namespace TrainingManagement.CourseApi.Data
         [Key]
         public int CourseId { get; set; }
         public string CourseName { get; set; } = string.Empty;
-        public int CourseDescription { get; set; }
+        public required string CourseDescription { get; set; }
         public int Duration { get; set; }
 
     }
