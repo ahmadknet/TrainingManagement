@@ -11,8 +11,8 @@ public static class  DbContextConfig
     public static WebApplicationBuilder ConfigureDbContext(this WebApplicationBuilder builder)
     {
         string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-        builder.Services.AddDbContext<AuthenticationDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlite(connectionString));
 
         return builder;
     }
