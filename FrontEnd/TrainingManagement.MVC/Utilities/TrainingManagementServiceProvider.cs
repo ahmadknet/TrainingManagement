@@ -18,8 +18,21 @@ namespace TrainingManagement.MVC.Utilities
 
             try
             {
+                var content;
                 using var client = new HttpClient();
-
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                if(requestDTO != null ) {
+                    if (!string.IsNullOrWhiteSpace(requestDTO.AuthToken))
+                    {
+                        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", requestDTO.AuthToken);
+                    }
+                }
+                else
+                {
+                    responseDTO.IsRequestProcessed = false;
+                    responseDTO.Errors.Add("Missing Authorization Token");
+                }
                 var method = (requestDTO.Method ?? "get").ToLowerInvariant();
 
                 HttpResponseMessage httpResponse;
@@ -28,18 +41,21 @@ namespace TrainingManagement.MVC.Utilities
                 {
                     case "get":
                         httpResponse = await client.GetAsync(requestDTO.Url ?? string.Empty);
+                        content = await httpResponse.Content.ReadAsStringAsync();
+                        responseDTO.StatusCode = (int)httpResponse.StatusCode;
+                        responseDTO.Data = JsonSerializer.Deserialize<JsonElement>(content, _jsonOptions);
                         break;
                     case "post":
                         {
                             var payload = requestDTO.Data == null ? string.Empty : JsonSerializer.Serialize(requestDTO.Data, _jsonOptions);
-                            using var content = new StringContent(payload, Encoding.UTF8, "application/json");
+                            content = new StringContent(payload, Encoding.UTF8, "application/json");
                             httpResponse = await client.PostAsync(requestDTO.Url ?? string.Empty, content);
                         }
                         break;
                     case "put":
                         {
                             var payload = requestDTO.Data == null ? string.Empty : JsonSerializer.Serialize(requestDTO.Data, _jsonOptions);
-                            using var content = new StringContent(payload, Encoding.UTF8, "application/json");
+                            content = new StringContent(payload, Encoding.UTF8, "application/json");
                             httpResponse = await client.PutAsync(requestDTO.Url ?? string.Empty, content);
                         }
                         break;
