@@ -3,7 +3,8 @@
     <Project Path="FrontEnd/TrainingManagement.MVC/TrainingManagement.MVC.csproj" />
   </Folder>
   <Folder Name="/Services/">
-    <Project Path="Services/TrainingManagement.CourseApi/TrainingManagement.CourseApi.csproj" />
+    <Project Path="Services/TrainingManagement.AuthenticationApi/TrainingManagement.AuthenticationApi.csproj" />`n    <Project Path="Services/TrainingManagement.CourseApi/TrainingManagement.CourseApi.csproj" />
   </Folder>
 </Solution>
+
 
