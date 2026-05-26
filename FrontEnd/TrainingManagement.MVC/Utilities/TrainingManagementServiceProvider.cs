@@ -18,7 +18,7 @@ namespace TrainingManagement.MVC.Utilities
 
             try
             {
-                var content;
+                //content = null;
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
@@ -41,22 +41,22 @@ namespace TrainingManagement.MVC.Utilities
                 {
                     case "get":
                         httpResponse = await client.GetAsync(requestDTO.Url ?? string.Empty);
-                        content = await httpResponse.Content.ReadAsStringAsync();
+                        var content = await httpResponse.Content.ReadAsStringAsync();
                         responseDTO.StatusCode = (int)httpResponse.StatusCode;
                         responseDTO.Data = JsonSerializer.Deserialize<JsonElement>(content, _jsonOptions);
                         break;
                     case "post":
                         {
                             var payload = requestDTO.Data == null ? string.Empty : JsonSerializer.Serialize(requestDTO.Data, _jsonOptions);
-                            content = new StringContent(payload, Encoding.UTF8, "application/json");
-                            httpResponse = await client.PostAsync(requestDTO.Url ?? string.Empty, content);
+                            var postContent = new StringContent(payload, Encoding.UTF8, "application/json");
+                            httpResponse = await client.PostAsync(requestDTO.Url ?? string.Empty, postContent);
                         }
                         break;
                     case "put":
                         {
                             var payload = requestDTO.Data == null ? string.Empty : JsonSerializer.Serialize(requestDTO.Data, _jsonOptions);
-                            content = new StringContent(payload, Encoding.UTF8, "application/json");
-                            httpResponse = await client.PutAsync(requestDTO.Url ?? string.Empty, content);
+                            var putContent = new StringContent(payload, Encoding.UTF8, "application/json");
+                            httpResponse = await client.PutAsync(requestDTO.Url ?? string.Empty, putContent);
                         }
                         break;
                     case "delete":
