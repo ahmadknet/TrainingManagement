@@ -1,11 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using TrainingManagement.AuthenticationApi.Data;
+
 namespace TrainingManagement.AuthenticationApi.Configurations;
 
 /// <summary>
 /// Database context configuration settings
 /// </summary>
-public class DbContextConfig
+public static class  DbContextConfig
 {
-    public string? ConnectionString { get; set; }
-    public bool EnableSensitiveDataLogging { get; set; }
-    public bool UseInMemoryDatabase { get; set; }
+    public static WebApplicationBuilder ConfigureDbContext(this WebApplicationBuilder builder)
+    {
+        string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlite(connectionString));
+
+        return builder;
+    }
 }

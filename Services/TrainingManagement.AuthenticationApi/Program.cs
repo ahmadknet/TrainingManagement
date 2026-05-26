@@ -1,38 +1,57 @@
 using TrainingManagement.AuthenticationApi.Data;
+using TrainingManagement.AuthenticationApi.Configurations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TrainingManagement.AuthenticationApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
+// Add Swagger with Security Definition
 builder.Services.AddSwaggerGen();
 
-// Add DbContext
-builder.Services.AddDbContext<AuthenticationDbContext>(options =>
+builder.Services.AddCors(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    if (string.IsNullOrEmpty(connectionString))
+    options.AddPolicy("AllowAllOrigins", policy =>
     {
-        // Use in-memory database for development
-        options.UseInMemoryDatabase("AuthenticationDb");
+        policy.AllowAnyOrigin();
+        policy.AllowAnyMethod();
+        policy.AllowAnyHeader();
+    });
+});
+
+// Add DbContext
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        options.UseSqlite(connectionString);
     }
     else
     {
-        options.UseSqlServer(connectionString);
+        options.UseInMemoryDatabase("AuthenticationDb");
     }
 });
 
-// Add CORS
-builder.Services.AddCors(options =>
+// Add Identity with custom user store
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Add JWT configuration
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtConfig"));
 
 var app = builder.Build();
 
@@ -44,7 +63,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors("AllowAllOrigins");
 app.UseAuthentication();
 app.UseAuthorization();
 

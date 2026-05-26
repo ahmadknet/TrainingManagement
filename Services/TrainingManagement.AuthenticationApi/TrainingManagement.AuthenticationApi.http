@@ -1,6 +1,6 @@
 @TrainingManagement.AuthenticationApi_HostAddress = http://localhost:5135
 
-GET {{TrainingManagement.AuthenticationApi_HostAddress}}/weatherforecast/
+POST {{TrainingManagement.AuthenticationApi_HostAddress}}/api/Auth/register
 Accept: application/json
 
 ###
