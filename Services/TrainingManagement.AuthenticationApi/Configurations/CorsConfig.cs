@@ -1,11 +1,31 @@
 namespace TrainingManagement.AuthenticationApi.Configurations;
 
 /// <summary>
-/// CORS configuration settings
+/// CORS configuration extension for WebApplicationBuilder
 /// </summary>
-public class CorsConfig
+public static class CorsConfig
 {
-    public string[]? AllowedOrigins { get; set; }
-    public string[]? AllowedMethods { get; set; }
-    public string[]? AllowedHeaders { get; set; }
+    public static WebApplicationBuilder AddCorsConfig(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("Development", policyBuilder =>
+            {
+                policyBuilder.AllowAnyMethod()
+                             .AllowAnyHeader()
+                             .AllowAnyOrigin()
+                             .AllowCredentials();
+            });
+
+            options.AddPolicy("Production", policyBuilder =>
+            {
+                policyBuilder.AllowAnyMethod()
+                             .AllowAnyHeader()
+                             .AllowAnyOrigin()
+                             .AllowCredentials();
+            });
+        });
+
+        return builder;
+    }
 }

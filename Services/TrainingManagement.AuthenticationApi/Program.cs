@@ -1,4 +1,5 @@
 using TrainingManagement.AuthenticationApi.Data;
+using TrainingManagement.AuthenticationApi.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,16 +24,8 @@ builder.Services.AddDbContext<AuthenticationDbContext>(options =>
     }
 });
 
-// Add CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
+// Add CORS Configuration
+builder.AddCorsConfig();
 
 var app = builder.Build();
 
@@ -44,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
+app.UseCors("Development");
 app.UseAuthentication();
 app.UseAuthorization();
 
