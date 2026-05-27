@@ -56,11 +56,11 @@ public class AuthController(SignInManager<IdentityUser> signInManager, UserManag
                         AccessToken = token,
                         User = new UserDto
                         {
-                            Id = int.Parse(user.Id),
-                            Username = user.UserName,
+                            //Id = int.Parse(user.Id),
+                            //Username = user.UserName,
                             Email = user.Email,
-                            FirstName = user.Email?.Split('@')[0] ?? "User",
-                            LastName = "User"
+                            //FirstName = user.Email?.Split('@')[0] ?? "User",
+                            //LastName = "User"
                         }
                     });
                 }
@@ -168,10 +168,10 @@ public class AuthController(SignInManager<IdentityUser> signInManager, UserManag
                 User = new UserDto
                 {
                     Id = int.Parse(user.Id),
-                    Username = user.UserName,
+                    //Username = user.UserName,
                     Email = user.Email,
-                    FirstName = user.Email?.Split('@')[0] ?? "User",
-                    LastName = "User"
+                    //FirstName = user.Email?.Split('@')[0] ?? "User",
+                    //LastName = "User"
                 }
             });
         }
@@ -242,7 +242,6 @@ public class AuthController(SignInManager<IdentityUser> signInManager, UserManag
                     User = new UserDto
                     {
                         Id = int.Parse(user.Id),
-                        Username = user.UserName,
                         Email = user.Email
                     }
                 });
