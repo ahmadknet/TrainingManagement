@@ -1,0 +1,103 @@
+<main class="app-shell">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Course API</p>
+      <h1>Training Management</h1>
+    </div>
+
+    <div class="summary" aria-label="Course count">
+      <span>{{ courses.length }}</span>
+      <small>Courses</small>
+    </div>
+  </header>
+
+  <section class="workspace">
+    <form class="editor" (ngSubmit)="saveCourse()" #courseEditor="ngForm">
+      <div class="section-heading">
+        <h2>{{ isEditing ? 'Edit course' : 'Create course' }}</h2>
+        <button type="button" class="ghost-button" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+      </div>
+
+      <label>
+        <span>Course name</span>
+        <input
+          name="courseName"
+          type="text"
+          autocomplete="off"
+          required
+          [(ngModel)]="courseForm.courseName"
+        />
+      </label>
+
+      <label>
+        <span>Description</span>
+        <textarea
+          name="courseDescription"
+          rows="5"
+          required
+          [(ngModel)]="courseForm.courseDescription"
+        ></textarea>
+      </label>
+
+      <label>
+        <span>Duration</span>
+        <input name="duration" type="number" min="1" required [(ngModel)]="courseForm.duration" />
+      </label>
+
+      <button class="primary-button" type="submit" [disabled]="saving || courseEditor.invalid">
+        {{ saving ? 'Saving' : isEditing ? 'Save changes' : 'Create course' }}
+      </button>
+    </form>
+
+    <section class="course-list" aria-labelledby="course-list-title">
+      <div class="section-heading">
+        <h2 id="course-list-title">Courses</h2>
+        <button type="button" class="ghost-button" (click)="loadCourses()" [disabled]="loading">
+          {{ loading ? 'Refreshing' : 'Refresh' }}
+        </button>
+      </div>
+
+      <p class="notice success" *ngIf="message">{{ message }}</p>
+      <p class="notice danger" *ngIf="error">{{ error }}</p>
+
+      <div class="table-wrap" *ngIf="courses.length; else emptyState">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Duration</th>
+              <th class="actions-heading">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of courses; trackBy: trackByCourseId">
+              <td>{{ course.courseName }}</td>
+              <td>{{ course.courseDescription }}</td>
+              <td>{{ course.duration }} hrs</td>
+              <td>
+                <div class="actions">
+                  <button type="button" class="ghost-button" (click)="editCourse(course)">Edit</button>
+                  <button
+                    type="button"
+                    class="danger-button"
+                    (click)="deleteCourse(course)"
+                    [disabled]="deletingCourseId === course.courseId"
+                  >
+                    {{ deletingCourseId === course.courseId ? 'Deleting' : 'Delete' }}
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <strong>{{ loading ? 'Loading courses' : 'No courses yet' }}</strong>
+        </div>
+      </ng-template>
+    </section>
+  </section>
+</main>

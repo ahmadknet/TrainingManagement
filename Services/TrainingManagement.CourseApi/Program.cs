@@ -2,10 +2,20 @@ using Microsoft.EntityFrameworkCore;
 using TrainingManagement.CourseApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+const string AllowAngularClient = "AllowAngularClient";
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(AllowAngularClient, policy =>
+    {
+        policy.WithOrigins("http://localhost:4200", "https://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 //builder.Services.AddSwaggerGen();
@@ -24,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(AllowAngularClient);
 
 app.UseAuthorization();
 
