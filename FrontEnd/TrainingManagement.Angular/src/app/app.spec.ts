@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
 import { App } from './app';
-import { CourseApiService } from './courses/course-api.service';
+import { AuthApiService } from './auth/auth-api.service';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -10,18 +11,16 @@ describe('App', () => {
       imports: [App],
       providers: [
         {
-          provide: CourseApiService,
+          provide: AuthApiService,
           useValue: {
-            getCourses: () =>
-              of({
-                data: [],
-                isRequestProcessed: true,
-                message: 'Courses retrieved successfully',
-                statusCode: 200,
-                errors: null
-              })
+            session: null,
+            session$: of(null),
+            login: () => of({ success: true, accessToken: 'token' }),
+            register: () => of({ success: true, accessToken: 'token' }),
+            logout: () => undefined
           }
-        }
+        },
+        provideRouter([])
       ]
     }).compileComponents();
   });
