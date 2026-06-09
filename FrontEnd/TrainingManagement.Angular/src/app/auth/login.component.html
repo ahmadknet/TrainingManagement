@@ -1,0 +1,69 @@
+<section class="auth-panel">
+  <div class="auth-copy">
+    <p class="eyebrow">Authentication API</p>
+    <h2>Sign in to manage courses</h2>
+    <p>Course creation, editing, and deletion are available only after a successful login.</p>
+  </div>
+
+  <form class="auth-card" (ngSubmit)="authMode === 'login' ? login() : register()" #authEditor="ngForm">
+    <div class="mode-switch" aria-label="Authentication mode">
+      <button type="button" [class.active]="authMode === 'login'" (click)="setAuthMode('login')">Login</button>
+      <button type="button" [class.active]="authMode === 'register'" (click)="setAuthMode('register')">Register</button>
+    </div>
+
+    <ng-container *ngIf="authMode === 'login'; else registerFields">
+      <label>
+        <span>Email</span>
+        <input name="loginEmail" type="email" autocomplete="email" required [(ngModel)]="loginForm.email" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input
+          name="loginPassword"
+          type="password"
+          autocomplete="current-password"
+          required
+          [(ngModel)]="loginForm.password"
+        />
+      </label>
+    </ng-container>
+
+    <ng-template #registerFields>
+      <label>
+        <span>Email</span>
+        <input name="registerEmail" type="email" autocomplete="email" required [(ngModel)]="registerForm.email" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input
+          name="registerPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="8"
+          [(ngModel)]="registerForm.password"
+        />
+      </label>
+
+      <label>
+        <span>Confirm password</span>
+        <input
+          name="confirmPassword"
+          type="password"
+          autocomplete="new-password"
+          required
+          minlength="8"
+          [(ngModel)]="registerForm.confirmPassword"
+        />
+      </label>
+    </ng-template>
+
+    <p class="notice danger" *ngIf="authError">{{ authError }}</p>
+
+    <button class="primary-button" type="submit" [disabled]="authenticating || authEditor.invalid">
+      {{ authenticating ? 'Please wait' : authMode === 'login' ? 'Login' : 'Create account' }}
+    </button>
+  </form>
+</section>
